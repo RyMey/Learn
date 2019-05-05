@@ -5,20 +5,27 @@ from pyspark.sql.functions import udf
 from pyspark.sql.types import *
 import re
 
+# mengkonfigurasi spark
 sparkConf = SparkConf().setMaster("local").setAppName("Python Spark Playground")
+
+# membuat spark context
 sparkContext = SparkContext(conf=sparkConf)
+
+# membuat spark session
 sparkSession = SparkSession(sparkContext)
 
 # membuar RDD
-story = "Pada jaman dahulu Zetra belum mandi, sampai sekarang belum mandi. Terus dia merasa gatal, dan akhirnya " \
-        "mandi. Selesai. "
+story = "In the song, Maui told Moana about his amazing deeds.  Why - he pulled up the islands from the sea," + \
+         "he lifted the sky, he even found fire and gave it to humans!  As a demi-god, Maui was born with" + \
+         "special powers. Demi-god means one parent is a god and the other is human. Maui’s father was the god" + \ 
+         "and his mother was human."
 rddStory = sparkContext.parallelize([story])
 lengthStory = rddStory.flatMap(lambda sentence: sentence.split(" ")) \
     .filter(lambda word: word.startswith('D') or word.startswith('d')) \
     .count()
 print(lengthStory)
 
-# print data story tapi bersih
+# print story lower case tanpa tanda baca
 rddStory.map(lambda sentence: re.sub(r"[,.\\-_\\?]", "", sentence.lower())) \
     .foreach(lambda sentence: print(sentence))
 
