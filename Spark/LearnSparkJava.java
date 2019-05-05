@@ -29,8 +29,10 @@ public class LearnSparkJava {
         // khusus untuk dataset
         SparkSession sparkSession = new SparkSession(sparkContext.sc());
 
-        String story = "Pada jaman dahulu Zetra belum mandi, sampai sekarang belum mandi. Terus dia merasa gatal, " +
-                "dan akhirnya mandi. Selesai.";
+        String story = "In the song, Maui told Moana about his amazing deeds.  Why - he pulled up the islands from the sea," + \
+                     "he lifted the sky, he even found fire and gave it to humans!  As a demi-god, Maui was born with" + \
+                     "special powers. Demi-god means one parent is a god and the other is human. Maui’s father was the god" + \ 
+                     "and his mother was human."
         // bikin semacam list di spark dari story yg udah dibikin, karena isinya 1 jadinya singletonList
         JavaRDD<String> rddStory = sparkContext.parallelize(Collections.singletonList(story));
         // ambil kata yg depannya d
@@ -43,7 +45,7 @@ public class LearnSparkJava {
         rddStory.map(sentence -> sentence.toLowerCase().replaceAll("[,.\\-_\\?]", ""))
                 .foreach(sentence -> System.out.println(sentence));
 
-        // ambil file nanti bentuknya semacam list
+        // ambil file nanti disimpan ke RDD (bentuknya semacam list)
         JavaRDD<String> rddFile = sparkContext.textFile("/Users/rya.meyvriska/Downloads/mock_data.csv");
         rddFile.take(3).forEach(element -> System.out.println(element));
 
